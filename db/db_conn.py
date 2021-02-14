@@ -8,12 +8,15 @@ logObj = logger.getLogger()
 
 class MySQL(object):
 	_instance = None
+	def __init__(self):
+		self.connection = self._instance.connection
+		self.cursor = self._instance.cursor
 	def __new__(cls):
 		if cls._instance is None:
 			cls._instance = object.__new__(cls)
 			# TODO: take this value from db_config.yml
 			db_config = {'database': 'rbac', 'host': '127.0.0.1', 
-			'password': 'swatiArora@1', 'port': 3306, 'user': 'swati'}
+			'password': '10p14aa0071', 'port': 3306, 'user': 'root'}
 			try:
 				logObj.debug('connecting to MySQL database...')
 				connection = MySQL._instance.connection = mysql.connector.connect(**db_config)
@@ -27,33 +30,47 @@ class MySQL(object):
 				logObj.info('connection established\n{}'.format(db_version[0]))
 
 		return cls._instance
+		
+			
 
-	def __init__(self):
-		self.connection = self._instance.connection
-		self.cursor = self._instance.cursor
-
-	def query(self, query):
-		try:
-			result = self.cursor.execute(query)
-		except Exception as error:
-			logObj.error('error execting query "{}", error: {}'.format(query, error))
-			return None
-		else:
-			return result
-
-	def __del__(self):
-		self.connection.close()
-		self.cursor.close()
-
+DBSESSION = None
 def get_db_session():
-	return MySQL()
+	global DBSESSION
+	if DBSESSION is None:
+		DBSESSION = MySQL()
+	return DBSESSION
+
 
 def close_db_session():
-	conn = get_db_session()
-	logObj.debug("Closing DB session")
-	try:
-		conn.__del__()
-	except Exception as e:
-		logObj.error("Couldn't close connect: {}".format(e))
+	logObj.info("Closing DB session")
+	global DBSESSION
+	if DBSESSION is None:
+		try:
+			DBSESSION.connection.close()
+		except Exception as e:
+			logObj.error("Couldn't close connection: {}".format(e))
 		raise e
-	
+
+		try:
+			DBSESSION.cursor.close()
+		except Exception as e:
+			logObj.error("Couldn't close cursor: {}".format(e))
+		raise e
+
+def execute_query(query):
+	global DBSESSION
+	DBSESSION = get_db_session()
+	result = None
+	code = 500
+	logObj.debug("executing query " + query)
+	if DBSESSION:
+		try:
+			result = DBSESSION.cursor.execute(query)
+		except Exception as error:
+			logObj.error('error execting query "{}", error:   {}'.format(query, error))
+
+		else:
+			code = 200
+			
+	return result,code
+
