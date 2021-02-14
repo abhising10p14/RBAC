@@ -1,12 +1,13 @@
 {
-	"RBAC_PORT" :"80",
-	"AUTHENTICATION_ENABLE":"true",
-	"DB_HOST":"107.108.57.146",
-	"DB_USERNAME":"",
-	"DB_PASSWORD":"",
-	"DB_PORT":"",
-	"ENCRYPTION_KEY":"",
-	"SERVER_URL":"localhost",
-	"LOG_LEVEL":6,
-	"LOG_OUTPUT":2
+	"RBAC_PORT" 			:"8001",
+	"AUTHENTICATION_ENABLE"	:"true",
+	"DB_HOST"				:"127.0.0.1",
+	"DB_USERNAME"			:"root",
+	"DB_PASSWORD"			:"10p14aa0071",
+	"DB_PORT"				:"3306",
+	"ENCRYPTION_KEY"		:"",
+	"SERVER_URL"			:"localhost",
+	"LOG_LEVEL"				:1,
+	"LOG_OUTPUT"			:"logFile.log",
+	"DATABASE_NAME"			:"rbac"
 }
