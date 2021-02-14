@@ -9,5 +9,11 @@
 	"SERVER_URL"			:"localhost",
 	"LOG_LEVEL"				:1,
 	"LOG_OUTPUT"			:"logFile.log",
-	"DATABASE_NAME"			:"rbac"
+	"DATABASE_NAME"			:"rbac",
+	"EMPLOYEE_TABLE"		:"employees",
+	"ROLE_TABLE"			:"role",
+	"ROOM_TABLE"			:"room",
+	"AUTH_TABLE"			:"auth",
+	"LOGIN_PAGE"			:"login.html",
+	"EMPLOYEE_VIEW_PAGE"	:"employeesTable.html"
 }

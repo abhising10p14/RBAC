@@ -6,7 +6,7 @@ sys.path.append("..")
 from flask import Flask, render_template, request, redirect, url_for
 from flask import send_file
 from flask import send_from_directory
-
+from collections import defaultdict
 import os
 
 from config import config
@@ -17,49 +17,71 @@ from log import logger
 
 global CONFIGOBJ
 global LOGOBJ 
+global SESSION
+SESSION =  defaultdict(list,{ k:[] for k in ('userIP','username') })
 
 app = Flask(__name__)
-
-@app.route('/server',methods=['GET','POST'])  # writing it for both get and post
+@app.route('/server',methods=['GET'])  
 def serverMain():
+	global SESSION
 	global CONFIGOBJ
 	global LOGOBJ 
 	userIp = request.remote_addr
 	uUid = utils.getuUid()
-	LOGOBJ.debug("accessing /server by :" + userIp + uUid)
-	#first check fro config whether auth is enabled or not 
-	#if login is required and 
-	#render login page if not logged in
-	if CONFIGOBJ.auth_enabled:
-		return render_template("temp.html")
+	LOGOBJ.debug("accessing /server by :" + str(userIp) + str(uUid))
+	if  userIp in SESSION['userIP'] :
+		return 'Logged in as ' + userIp + '<br>' + "<b><a href = '/logout'>click here to log out</a></b>"
 	else:
-		#TODO: call the rbac server next layer 
-		LOGOBJ.debug("go to next")
-		return render_template("temp.html")
+		if CONFIGOBJ.auth_enabled:
+			return render_template(CONFIGOBJ.login_page)
+		else:
+			LOGOBJ.debug("Auth Not Enabled")
+			return render_template(CONFIGOBJ.login_page)
 
-@app.route('/login',methods=['POST'])
+# @app.route('/login',methods=['POST','GET'])
+# def loginServer():
+
+@app.route('/login',methods=['GET'])
 def loginServer():
 	global CONFIGOBJ
 	global LOGOBJ 
+	global SESSION
 	userIp 		= request.remote_addr
 	uUid 		= utils.getuUid()
-	LOGOBJ.debug("accessing /login by :" + userIp + uUid)
+	LOGOBJ.debug("accessing /login by :" + str(userIp) + str(uUid))
+	return render_template(CONFIGOBJ.login_page)
+
+@app.route('/authenticate')
+def authenticate():
+	global CONFIGOBJ
+	global LOGOBJ 
+	global SESSION
+	userIp 		= request.remote_addr
+	uUid 		= utils.getuUid()
+	LOGOBJ.debug("accessing /login by :" + str(userIp) + str(uUid))
 	userName = ""
 	passWord = ""
-	authSuccess = False
-	#if already logged in or if auth is not required we need to proceed to next page 
 	if CONFIGOBJ.auth_enabled:
 		userName = str(request.form.get('username'))
 		passWord = str(request.form.get('password'))
-		#TODO: call post sql query with given username and password
-		#like 
-		#authSuccess = sqlQuery()
-		authSuccess = True
-		if authSuccess == True:
-			#TODO: call the rbac server next layer i.e resource page 
+		auth_data, authSuccess = db_utils.get_employee_authentication(username,password)
+		if authSuccess == 200:
 			LOGOBJ.debug("Successful!")
-			return {'username': userName, 'password': passWord}
+			# adding to session
+			# TODO : remove this fromm sessionn after a time if not used 
+			SESSION['userIp'].append(userIp)
+			SESSION['username'].append(userName)
+			employee_data,code = db_utils.get_employeeTable()
+			return render_template(CONFIGOBJ.employee_view_page, data=employee_data)
+		else:
+			return {"Forbidden!!!", 403}
+	else:
+		employee_data,code = db_utils.get_employeeTable()
+		return render_template(CONFIGOBJ.employee_view_page, data=employee_data)
 
+
+# @app.route('/logout',methods=['GET'])
+# def loginServer():
 
 
 if __name__ == '__main__':

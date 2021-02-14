@@ -66,12 +66,12 @@ def execute_query(query):
 	logObj.debug("executing query " + query)
 	if DBSESSION:
 		try:
-			result = DBSESSION.cursor.execute(query)
+			DBSESSION.cursor.execute(query)
+			result = DBSESSION.cursor.fetchall()
 		except Exception as error:
 			logObj.error('error execting query "{}", error:   {}'.format(query, error))
 
 		else:
 			code = 200
-			
 	return result,code
 
