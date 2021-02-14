@@ -1,8 +1,8 @@
 import sys
 sys.path.append("..")
 
-from data import tables_data
-from db import create_tables
+
+from db import db_utils
 from flask import Flask, render_template, request, redirect, url_for
 from flask import send_file
 from flask import send_from_directory
@@ -30,7 +30,7 @@ def serverMain():
 		return render_template("temp.html")
 	else:
 		#TODO: call the rbac server next layer 
-		print("go to next")
+		log.debug("go to next")
 		return render_template("temp.html")
 
 @app.route('/login',methods=['POST'])
@@ -47,20 +47,17 @@ def loginServer():
 	if ISLOGGEDIN == False and ISAUTHREQUIRED == True:
 		userName = str(request.form.get('username'))
 		passWord = str(request.form.get('password'))
-		print(userName)
-		print(passWord)
 		#TODO: call post sql query with given username and password
 		#like 
 		#authSuccess = sqlQuery()
 		authSuccess = True
 		if authSuccess == True:
 			#TODO: call the rbac server next layer i.e resource page 
-			print("Successful!")
+			logObj.debug("Successful!")
 			return {'username': userName, 'password': passWord}
 
 portNum = 8001  #TODO: get it from config
 
-print("here ")
 if __name__ == '__main__':
-	create_tables.create_table(tables_data.TABLES)
+	db_utils.create_table()
 	app.run(host='0.0.0.0', port = portNum, debug=True, threaded=True)
