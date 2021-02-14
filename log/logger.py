@@ -1,12 +1,14 @@
 import logging
+from logging.handlers import RotatingFileHandler
 
-LOGLEVEL = 3 #TODO: this should be taken from config 
+LOGLEVEL = logging.DEBUG #TODO: this should be taken from config 
 LOGOBJ = None
 
 def getLogger():
 	global LOGOBJ
 	if LOGOBJ is None:
-		logging.basicConfig(format='%(levelname)s:%(message)s',filename='logFile.log', level=logging.ERROR)
 		LOGOBJ = logging.getLogger(__name__)
+		handler = RotatingFileHandler('logFile.log', maxBytes=2000, backupCount=10)
+		LOGOBJ.addHandler(handler)
 		LOGOBJ.setLevel(LOGLEVEL)
 	return LOGOBJ
