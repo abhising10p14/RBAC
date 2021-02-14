@@ -6,3 +6,10 @@ def getuUid():
 	uUid  = uUid.replace(":",'-')
 	uUid  = uUid.replace(".",'-')
 	return uUid
+
+def getTime():
+	currentTime = str(datetime.now())
+	currentTime = currentTime.replace(" ",'')
+	currentTime  = currentTime.replace(":",'-')
+	currentTime  = currentTime.replace(".",'-')
+	return currentTime
