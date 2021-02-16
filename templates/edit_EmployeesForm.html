@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Edit Employee</h2>
+
+<form action="/editEmployee">
+  <label for="name">Name:</label><br>
+  <input type="text" id="name" name="name" value={{data.emp_name}}><br>
+  <label for="team">Team:</label><br>
+  <input type="text" id="team" name="team" value={{data.team}}><br><br>
+  <label for="position">Position:</label><br>
+  <input type="text" id="position" name="position" value={{data.position}}><br><br>
+  <label for="phone">Phone:</label><br>
+  <input type="text" id="phone" name="phone" value={{data.phone}}><br><br>
+  <label for="role">Role:</label><br>
+  <p>Current Role is: <var>{{data.role_name}}</var></p>
+  <label for="Roles">Role:</label>
+  <select name="roles" id="roles">
+    <option value="Admin">Admin</option>
+    <option value="Engg">Engg</option>
+    <option value="Office Manager">Office Manager</option>
+    <option value="Default">Default</option>
+  </select>
+  <input type="submit" value="Submit">
+</form> 
+
+
+</body>
+</html>

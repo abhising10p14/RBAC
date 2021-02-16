@@ -1,0 +1,48 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Employees</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+     <h2>Employees</h2>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+        <th>EMP ID</th>
+        <th>NAME</th>
+        <th>TEAM</th>
+        <th>POSITION</th>
+        <th>PHONE</th>
+        <th>EMAIL</th>
+        <th>ACTION</th>
+    </tr>
+    </thead>    
+    <tbody>
+     {% for row in data %}    
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+                <td>{{row[5]}}</td>
+                <td>{{row[6]}}</td>
+                <td><a href="/edit_employees?text={{row}}">Edit </a> &nbsp; <a href="/delete_employees?emp_id={{row[0]}}&role_id={{row[4]}}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
+
+

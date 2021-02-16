@@ -9,7 +9,7 @@ def getLogger():
 	global LOGOBJ
 	if LOGOBJ is None:
 		LOGOBJ = logging.getLogger(__name__)
-		logFileName =  str(utils.getuUid()) + "_logFile.log"
+		logFileName =  "logFile.log"
 		handler = RotatingFileHandler(logFileName, maxBytes=20000, backupCount=10)
 		LOGOBJ.addHandler(handler)
 		LOGOBJ.setLevel(LOGLEVEL)

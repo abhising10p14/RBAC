@@ -1,3 +1,5 @@
+EMPLOYEE = 
+
 EMP_ID = ["BP001","BP012","BP021","BP022","BP032","BP033","BP036","BP045","BP048","BP051"]
 
 NAME = ["Sophi Turner","Gerald Reeves","Martian Curtis","Leona Wolfe","Jessica Franklin","Anna Coleman","Lydia Perry","Ella Martel","John Snow","Cersi Lanyster"]
@@ -9,3 +11,43 @@ POSITION = ["CEO","CTO","CFO","VP","Principal","Principal","Director Engg","Dire
 TEAM = ["Management","Management","IOS team","QA","Engg","Product","Product","Android team","Designer","Management",]
 
 PHONE = ["(+91)9458548798","(+91)6468877864","(+91)3245467894","(+91)1479457895","(+91)9758462301","(+91)8745693120","(+91)7894563214","(+91)7485963123","(+91)1459637825","(+91)3794351986"]
+
+ROLE_TABLE: 
+ROLES = 				['Admin', 'Engg', 'Office Manager', 'Default']
+ROOM_EDIT_ROLE   =		[1,			0,			1,				0	 ]
+ROOM_READ_ROLE 	 =		[1,			0,			1,				1	 ]
+ROOM_DELETE_ROLE =		[1, 		0,			1,				0	 ]
+
+EMPLOYEE_EDIT_ROLE	 =	[1,			1,			0,				0	 ]
+EMPLOYEE_READ_ROLE 	 =  [1,			1,			0,				1	 ]
+EMPLOYEE_DELETE_ROLE =  [1,			1,			0,				0	 ]	
+
+
+Auth==>  
+
+insert into auth(email, password) values('swatiaroa@gmail.com', '1234');
+
+Employee ==> 
+
+insert into employees(emp_name ,team, position, role, phone_number, email) values('Gerald Reeves', 'IOS team','CTO', 2, '+916468877864', 'b.fitzgerald@hotmail.com');
+
+insert into employees(emp_name ,team, position, role, phone_number, email) values('Sophi Turner', 'Management','CEO', 1, '+91498898754', 'sfsefe@gmail.com')
+
+
+
+ROLE ==> 
+
+insert into role(role_name, user_view,user_edit,user_delete,room_view, room_edit, room_delete) values ('Engg',1,1,1,0,0,0);
+
+insert into role(role_name, user_view,user_edit,user_delete,room_view, room_edit, room_delete) values ('Office Manager',0,0,0,1,1,1);
+
+insert into role(role_name, user_view,user_edit,user_delete,room_view, room_edit, room_delete) values ('Default',0,1,0,0,1,0);
+
+insert into role(role_name, user_view,user_edit,user_delete,room_view, room_edit, room_delete) values ('Admin',1,1,1,1,1,1);
+
+
+
+
+
+
+USER_ROLE = [1]

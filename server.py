@@ -38,32 +38,21 @@ def serverMain():
 			LOGOBJ.debug("Auth Not Enabled")
 			return render_template(CONFIGOBJ.login_page)
 
-# @app.route('/login',methods=['POST','GET'])
-# def loginServer():
 
-@app.route('/login',methods=['GET'])
+
+@app.route('/login',methods=['POST'])
 def loginServer():
 	global CONFIGOBJ
 	global LOGOBJ 
 	global SESSION
 	userIp 		= request.remote_addr
 	uUid 		= utils.getuUid()
-	LOGOBJ.debug("accessing /login by :" + str(userIp) + str(uUid))
-	return render_template(CONFIGOBJ.login_page)
-
-@app.route('/authenticate')
-def authenticate():
-	global CONFIGOBJ
-	global LOGOBJ 
-	global SESSION
-	userIp 		= request.remote_addr
-	uUid 		= utils.getuUid()
-	LOGOBJ.debug("accessing /login by :" + str(userIp) + str(uUid))
+	LOGOBJ.debug("accessing /authenticate by :" + str(userIp) + str(uUid))
 	userName = ""
 	passWord = ""
 	if CONFIGOBJ.auth_enabled:
-		userName = str(request.form.get('username'))
-		passWord = str(request.form.get('password'))
+		username = str(request.form.get('username'))
+		password = str(request.form.get('password'))
 		auth_data, authSuccess = db_utils.get_employee_authentication(username,password)
 		if authSuccess == 200:
 			LOGOBJ.debug("Successful!")
@@ -72,9 +61,10 @@ def authenticate():
 			SESSION['userIp'].append(userIp)
 			SESSION['username'].append(userName)
 			employee_data,code = db_utils.get_employeeTable()
-			return render_template(CONFIGOBJ.employee_view_page, data=employee_data)
+			return render_template(CONFIGOBJ.admin_show_table_page, data=employee_data)
 		else:
-			return {"Forbidden!!!", 403}
+			LOGOBJ.debug("Invalid ACCESS!!!!" )
+			return render_template(CONFIGOBJ.forbidden_page)
 	else:
 		employee_data,code = db_utils.get_employeeTable()
 		return render_template(CONFIGOBJ.employee_view_page, data=employee_data)
@@ -83,6 +73,63 @@ def authenticate():
 # @app.route('/logout',methods=['GET'])
 # def loginServer():
 
+def convert_text_to_dictionary(data):
+	#preprocess data 
+	data = data.split(",")
+	data_dict = {}
+	data_dict['emp_id']   = data[0].replace('(',"")
+	data_dict['emp_name'] = data[1][1:len(data[1]) - 1].replace('u\'',"")
+	data_dict['team'] =     data[2][1:len(data[2]) - 1].replace('u\'',"")
+	data_dict['position'] =  data[3][1:len(data[3]) - 1].replace('u\'',"")
+	data_dict['role_id'] = data[4].replace(' ',"")
+	role_name, code = db_utils.get_data_from_role_table(int(data_dict['role_id']))
+	if code!= 200:
+		return {},code
+	else:
+		role_name = role_name[0][1]
+		data_dict['role_name'] = role_name
+	data_dict['phone'] = (data[5][1:len(data[5]) - 1].replace('u\'',"")).replace(' ',"")
+	data_dict['email'] = data[6][1:len(data[6]) - 1].replace('u\'',"")
+	return data_dict,200
+
+
+@app.route('/edit_employees')
+def edit_empployees():
+	global CONFIGOBJ
+	global LOGOBJ
+	userIp 		= request.remote_addr
+	uUid 		= utils.getuUid()
+	LOGOBJ.debug("accessing /edit_employees by :" + str(userIp) + str(uUid))
+	data = request.args.get('text', default='', type=str)
+	data_dict,code = convert_text_to_dictionary(data)
+	if code == 200:
+		return render_template("edit_EmployeesForm.html", data=data_dict)
+	else:
+		return code
+
+@app.route('/insertEmployee')
+def insert_into_employees():
+	global CONFIGOBJ
+	global LOGOBJ
+	userIp 		= request.remote_addr
+	uUid 		= utils.getuUid()
+	LOGOBJ.debug("accessing /insertEmployee by :" + str(userIp) + str(uUid))
+	name = str(request.form.get('name'))
+	team = str(request.form.get('team'))
+	position = str(request.form.get('position'))
+	phone	= str(request.form.get('phone'))
+	role_name = str(request.form.get('phone'))
+	
+
+
+
+@app.route('/delete_employees')
+def delete_empployees():
+	global CONFIGOBJ
+	global LOGOBJ
+	userIp 		= request.remote_addr
+	uUid 		= utils.getuUid()
+	LOGOBJ.debug("accessing /delete_employees by :" + str(userIp) + str(uUid))
 
 if __name__ == '__main__':
 	global CONFIGOBJ

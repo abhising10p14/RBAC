@@ -23,7 +23,7 @@ TABLES['employees'] = (
     "  `role` int(11) NOT NULL,"
     "  `phone_number` varchar(20) NOT NULL,"
     "  `email` varchar(100) NOT NULL UNIQUE,"
-    "  PRIMARY KEY (`emp_id`),"
+    "  PRIMARY KEY (`email`),"
     "  FOREIGN KEY (`role`) REFERENCES `role` (`role_id`)"
     ") ENGINE=InnoDB".format(CONFIGOBJ.employees_table_name))
 
@@ -42,5 +42,5 @@ TABLES['auth'] = (
     "CREATE TABLE IF NOT EXISTS `{}` ("
     "  `email` varchar(100) NOT NULL UNIQUE,"
     "  `password` varchar(20) NOT NULL,"
-    "  PRIMARY KEY (`email`),"
+    "  PRIMARY KEY (`email`)"
     ") ENGINE=InnoDB".format(CONFIGOBJ.auth_table_name))
