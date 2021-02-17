@@ -1,5 +1,5 @@
 import json 
-
+import os
 
 
 class RBAC_config_base(object):
@@ -29,8 +29,8 @@ class RBAC_config_base(object):
 		self.office_manager_show_page	= None
 
 CONFIGOBJ 	= None
-PROJECTPATH = "/home/abhishek/RBAC/RBAC/config/"
-FILENAME 	= "config.json"
+PROJECTPATH = os.getcwd()
+FILENAME 	= "/config/config.json"
 def load_config():
 	global CONFIGOBJ
 	global PROJECTPATH

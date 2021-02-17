@@ -21,7 +21,7 @@ global SESSION
 SESSION =  defaultdict(list,{ k:[] for k in ('userIP','username') })
 
 app = Flask(__name__)
-@app.route('/server',methods=['GET'])  
+@app.route('/',methods=['GET'])  
 def serverMain():
 	global SESSION
 	global CONFIGOBJ
@@ -37,7 +37,7 @@ def serverMain():
 		else:
 			LOGOBJ.debug("Auth Not Enabled")
 			return render_template(CONFIGOBJ.login_page)
-
+	return 800
 
 
 @app.route('/login',methods=['POST'])
@@ -137,4 +137,4 @@ if __name__ == '__main__':
 	LOGOBJ = logger.getLogger()
 	CONFIGOBJ = config.load_config()
 	db_utils.create_table()
-	app.run(host='0.0.0.0', port = CONFIGOBJ.rbac_port , debug=True, threaded=True)
+	app.run(debug=True, threaded=True)

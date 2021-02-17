@@ -1,7 +1,7 @@
 {
 	"RBAC_PORT" 					:"8001",
 	"AUTHENTICATION_ENABLE"			:"true",
-	"DB_HOST"						:"127.0.0.1",
+	"DB_HOST"						:"34.121.120.215",
 	"DB_USERNAME"					:"root",
 	"DB_PASSWORD"					:"10p14aa0071",
 	"DB_PORT"						:"3306",

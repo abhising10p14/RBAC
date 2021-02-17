@@ -23,7 +23,7 @@ TABLES['employees'] = (
     "  `role` int(11) NOT NULL,"
     "  `phone_number` varchar(20) NOT NULL,"
     "  `email` varchar(100) NOT NULL UNIQUE,"
-    "  PRIMARY KEY (`email`),"
+    "  PRIMARY KEY (`email`),  KEY `emp_id` (`emp_id`) , "
     "  FOREIGN KEY (`role`) REFERENCES `role` (`role_id`)"
     ") ENGINE=InnoDB".format(CONFIGOBJ.employees_table_name))
 
